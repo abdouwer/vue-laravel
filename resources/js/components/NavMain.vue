@@ -7,7 +7,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { urlIsActive } from '@/lib/utils';
-import { type NavItem } from '@/types';
+import { type NavItem } from '@/types/index';
 import { Link, usePage } from '@inertiajs/vue3';
 
 defineProps<{
