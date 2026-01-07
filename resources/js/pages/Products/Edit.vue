@@ -3,32 +3,34 @@ import Button from '@/components/ui/button/Button.vue';
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import { type BreadcrumbItem } from '@/types/index';
 import { Head, useForm } from '@inertiajs/vue3';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Create a product',
-        href: '/products/create',
-    },
-];
+
+interface Product {
+    id: number,
+    name: string,
+    price: number,
+    description: string,
+};
+
+const props = defineProps<{product: Product}>();
 
 const form = useForm({
-    name: '',
-    price: 0,
-    description: '',
+    name: props.product.name,
+    price: props.product.price,
+    description: props.product.description,
 });
 
 const handleSubmit = () => {
-    form.post(route('products.store'))
+    form.put(route('products.update',{product: props.product}))
 }
 
 </script>
 
 <template>
-    <Head title="Create a product" />
+    <Head title="Edit the product" />
 
-    <AppLayout :breadcrumbs="breadcrumbs">
+    <AppLayout :breadcrumbs="[{ title: 'Create a product', href: `/products/${props.product.id}/edit` }]">
         <div class="p-4">
             <form @submit.prevent="handleSubmit" className='w-8/12 space-y-4'>
             
@@ -47,7 +49,7 @@ const handleSubmit = () => {
                     <Input placeholder="Description" v-model="form.description" type="text" />
                     <div class="text-sm text-red-600" v-if="form.errors.description">{{ form.errors.description }}</div>
                 </div>
-                <Button type="submit" :disabled="form.processing">Add Product</Button>
+                <Button type="submit" :disabled="form.processing">Edit the product</Button>
             </form>
         </div>
     </AppLayout>
